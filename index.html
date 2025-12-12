@@ -8,10 +8,11 @@
     <style>
         /* --- CSS STYLES --- */
         :root {
-            --primary-red: #8B2E2E; /* Similar to Bob's Red Mill Red */
+            --primary-red: #8B2E2E; 
             --earth-brown: #5D4037;
             --wheat-cream: #F9F7F2;
-            --fresh-green: #4A7c59;
+            --fresh-green: #4A7c59; /* Standard green */
+            --swahili-green: #27ae60; /* Slightly different green for Swahili text */
             --text-dark: #333;
             --white: #ffffff;
         }
@@ -53,10 +54,6 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 15px 20px;
-        }
-
-        .logo img {
-            height: 60px; /* Adjust based on your actual logo file */
         }
 
         .logo-text {
@@ -108,7 +105,7 @@
 
         /* Hero Section */
         .hero {
-            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1932&auto=format&fit=crop'); /* Placeholder Farm Image */
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1932&auto=format&fit=crop');
             background-size: cover;
             background-position: center;
             height: 500px;
@@ -192,6 +189,8 @@
             border-radius: 8px;
             overflow: hidden;
             transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card:hover {
@@ -209,19 +208,45 @@
         .product-details {
             padding: 20px;
             text-align: center;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .product-title {
-            font-size: 1.2rem;
-            margin-bottom: 10px;
+            font-size: 1.1rem;
+            margin-bottom: 5px;
             color: var(--earth-brown);
+            font-weight: 700;
+        }
+        
+        /* NEW: Swahili Text Styling */
+        .swahili-text {
+            color: var(--swahili-green);
+            font-style: italic;
+            font-size: 0.95rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .product-meta {
+            margin-bottom: 15px;
+        }
+
+        .size-badge {
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            color: #666;
+            margin-right: 5px;
         }
 
         .product-price {
-            color: var(--fresh-green);
+            color: var(--primary-red);
             font-weight: bold;
-            font-size: 1.1rem;
-            margin-bottom: 15px;
+            font-size: 1.2rem;
         }
 
         /* About & Contact */
@@ -299,7 +324,7 @@
         }
 
         .mpesa-btn {
-            background-color: #4CAF50; /* M-Pesa Green */
+            background-color: #4CAF50;
             color: white;
             width: 100%;
             padding: 15px;
@@ -352,8 +377,7 @@
                     <li><a href="#story">Our Story</a></li>
                     <li><a href="#products">Products</a></li>
                     <li><a href="#recipes">Recipes</a></li>
-                    <li><a href="#blog">Blog</a></li>
-                    <li><a href="#contact">Contact Us</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </nav>
             <div class="cart-icon" onclick="openCart()">
@@ -385,12 +409,11 @@
         
         <div class="category-filter">
             <button class="filter-btn active" onclick="filterProducts('all')">All</button>
-            <button class="filter-btn" onclick="filterProducts('nuts')">Nuts</button>
-            <button class="filter-btn" onclick="filterProducts('dried-fruits')">Dried Fruits</button>
-            <button class="filter-btn" onclick="filterProducts('seeds')">Seeds</button>
-            <button class="filter-btn" onclick="filterProducts('grains')">Grains & Pulses</button>
-            <button class="filter-btn" onclick="filterProducts('spices')">Spices</button>
-            <button class="filter-btn" onclick="filterProducts('snacks')">Snack Mixes</button>
+            <button class="filter-btn" onclick="filterProducts('Nuts')">Nuts</button>
+            <button class="filter-btn" onclick="filterProducts('Seeds')">Seeds</button>
+            <button class="filter-btn" onclick="filterProducts('Dried Fruits')">Dried Fruits</button>
+            <button class="filter-btn" onclick="filterProducts('Spices & Herbs')">Spices</button>
+            <button class="filter-btn" onclick="filterProducts('Grains')">Grains</button>
         </div>
 
         <div class="product-grid" id="productGrid">
@@ -419,7 +442,7 @@
                 <h4>Follow Us</h4>
                 <a href="#"><i class="fa-brands fa-facebook"></i></a>
                 <a href="#"><i class="fa-brands fa-instagram"></i></a>
-                <a href="#"><i class="fa-brands fa-x-twitter"></i></a> <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a> 
                 <a href="#"><i class="fa-brands fa-youtube"></i></a>
             </div>
         </div>
@@ -449,65 +472,71 @@
     </div>
 
     <script>
-        // --- DATA ---
-        // Placeholder images used. Replace with actual product photos later.
+        // --- DATA SOURCE ---
+        // Categories: Nuts, Seeds, Dried Fruits, Spices & Herbs, Grains
         const products = [
-            { id: 1, name: "Premium Cashew Nuts", category: "nuts", price: 650, img: "https://images.unsplash.com/photo-1536591375315-198946ca99af?auto=format&fit=crop&w=300&q=80" },
-            { id: 2, name: "Dried Mango Slices", category: "dried-fruits", price: 400, img: "https://images.unsplash.com/photo-1621447504864-d8686e12698c?auto=format&fit=crop&w=300&q=80" },
-            { id: 3, name: "Red Lentils (1kg)", category: "grains", price: 350, img: "https://images.unsplash.com/photo-1515543904379-3d757afe7264?auto=format&fit=crop&w=300&q=80" },
-            { id: 4, name: "Cumin Powder", category: "spices", price: 200, img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=300&q=80" },
-            { id: 5, name: "Spicy Trail Mix", category: "snacks", price: 450, img: "https://images.unsplash.com/photo-1599599810769-bcde5a823097?auto=format&fit=crop&w=300&q=80" },
-            { id: 6, name: "Almonds", category: "nuts", price: 800, img: "https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?auto=format&fit=crop&w=300&q=80" },
-            { id: 7, name: "Turmeric Root", category: "spices", price: 150, img: "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&w=300&q=80" },
-            { id: 8, name: "Quinoa", category: "grains", price: 900, img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=300&q=80" },
-            // New Nuts
-            { id: 9, name: "Macadamia Nuts", category: "nuts", price: 1200, img: "https://placehold.co/300x200?text=Macadamia" },
-            { id: 10, name: "Walnuts", category: "nuts", price: 850, img: "https://placehold.co/300x200?text=Walnuts" },
-            { id: 11, name: "Hazelnuts", category: "nuts", price: 900, img: "https://placehold.co/300x200?text=Hazelnuts" },
-            { id: 12, name: "Pistachios", category: "nuts", price: 1100, img: "https://placehold.co/300x200?text=Pistachios" },
-            { id: 13, name: "Pecans", category: "nuts", price: 1000, img: "https://placehold.co/300x200?text=Pecans" },
-            { id: 14, name: "Brazil Nuts", category: "nuts", price: 1050, img: "https://placehold.co/300x200?text=Brazil+Nuts" },
-            { id: 15, name: "Pine Nuts", category: "nuts", price: 2500, img: "https://placehold.co/300x200?text=Pine+Nuts" },
-            { id: 16, name: "Peanuts", category: "nuts", price: 300, img: "https://placehold.co/300x200?text=Peanuts" },
-            // New Dried Fruits
-            { id: 17, name: "Dried Cranberries", category: "dried-fruits", price: 500, img: "https://placehold.co/300x200?text=Cranberries" },
-            { id: 18, name: "Dried Apricots", category: "dried-fruits", price: 550, img: "https://placehold.co/300x200?text=Apricots" },
-            { id: 19, name: "Dried Figs", category: "dried-fruits", price: 600, img: "https://placehold.co/300x200?text=Figs" },
-            { id: 20, name: "Arabian Dates", category: "dried-fruits", price: 400, img: "https://placehold.co/300x200?text=Arabian+Dates" },
-            { id: 21, name: "Mabroom Dates", category: "dried-fruits", price: 800, img: "https://placehold.co/300x200?text=Mabroom+Dates" },
-            { id: 22, name: "Sagai Dates", category: "dried-fruits", price: 900, img: "https://placehold.co/300x200?text=Sagai+Dates" },
-            { id: 23, name: "Ajwa Dates", category: "dried-fruits", price: 1200, img: "https://placehold.co/300x200?text=Ajwa+Dates" },
-            { id: 24, name: "Ambara Dates", category: "dried-fruits", price: 1000, img: "https://placehold.co/300x200?text=Ambara+Dates" },
-            { id: 25, name: "Raisins", category: "dried-fruits", price: 250, img: "https://placehold.co/300x200?text=Raisins" },
-            { id: 26, name: "Prunes", category: "dried-fruits", price: 650, img: "https://placehold.co/300x200?text=Prunes" },
-            { id: 27, name: "Dried Coconut", category: "dried-fruits", price: 300, img: "https://placehold.co/300x200?text=Coconut" },
-            { id: 28, name: "Dried Pineapple", category: "dried-fruits", price: 450, img: "https://placehold.co/300x200?text=Pineapple" },
-            { id: 29, name: "Dried Kiwi", category: "dried-fruits", price: 500, img: "https://placehold.co/300x200?text=Kiwi" },
-            { id: 30, name: "Dried Apple Rings", category: "dried-fruits", price: 400, img: "https://placehold.co/300x200?text=Apples" },
-            // New Seeds
-            { id: 31, name: "Pumpkin Seeds", category: "seeds", price: 400, img: "https://placehold.co/300x200?text=Pumpkin+Seeds" },
-            { id: 32, name: "Sunflower Seeds", category: "seeds", price: 350, img: "https://placehold.co/300x200?text=Sunflower+Seeds" },
-            { id: 33, name: "Chia Seeds", category: "seeds", price: 600, img: "https://placehold.co/300x200?text=Chia+Seeds" },
-            { id: 34, name: "Flaxseeds", category: "seeds", price: 300, img: "https://placehold.co/300x200?text=Flaxseeds" },
-            { id: 35, name: "Sesame Seeds", category: "seeds", price: 350, img: "https://placehold.co/300x200?text=Sesame+Seeds" },
-            { id: 36, name: "Charoli Seeds", category: "seeds", price: 1500, img: "https://placehold.co/300x200?text=Charoli+Seeds" },
-            // New Grains & Pulses
-            { id: 37, name: "Green Peas", category: "grains", price: 200, img: "https://placehold.co/300x200?text=Green+Peas" },
-            { id: 38, name: "Oats", category: "grains", price: 250, img: "https://placehold.co/300x200?text=Oats" },
-            // New Spices
-            { id: 39, name: "Coriander Seeds", category: "spices", price: 150, img: "https://placehold.co/300x200?text=Coriander" },
-            { id: 40, name: "Dried Mint", category: "spices", price: 100, img: "https://placehold.co/300x200?text=Mint" },
-            { id: 41, name: "Cloves", category: "spices", price: 500, img: "https://placehold.co/300x200?text=Cloves" },
-            { id: 42, name: "Cinnamon Sticks", category: "spices", price: 350, img: "https://placehold.co/300x200?text=Cinnamon" },
-            { id: 43, name: "Cardamom", category: "spices", price: 800, img: "https://placehold.co/300x200?text=Cardamom" },
-            { id: 44, name: "Rosemary", category: "spices", price: 200, img: "https://placehold.co/300x200?text=Rosemary" },
-            { id: 45, name: "Lemongrass", category: "spices", price: 150, img: "https://placehold.co/300x200?text=Lemongrass" },
-            { id: 46, name: "Dried Ginger", category: "spices", price: 250, img: "https://placehold.co/300x200?text=Ginger" },
-            { id: 47, name: "Paprika", category: "spices", price: 300, img: "https://placehold.co/300x200?text=Paprika" },
-            { id: 48, name: "Star Anise", category: "spices", price: 400, img: "https://placehold.co/300x200?text=Anise" },
-            { id: 49, name: "Fennel Seeds", category: "spices", price: 200, img: "https://placehold.co/300x200?text=Fennel" },
-            { id: 50, name: "Nutmeg", category: "spices", price: 600, img: "https://placehold.co/300x200?text=Nutmeg" },
+            // --- 1. NUTS (Standard Pack: 250g) ---
+            { id: 1, category: "Nuts", name: "Peanuts (Roasted)", swahili: "Njugu Karanga", size: "500g", price: 250 },
+            { id: 2, category: "Nuts", name: "Cashew Nuts (Raw)", swahili: "Korosho Mbichi", size: "250g", price: 300 },
+            { id: 3, category: "Nuts", name: "Cashew Nuts (Roasted)", swahili: "Korosho Kananga", size: "250g", price: 400 },
+            { id: 4, category: "Nuts", name: "Macadamia (Raw)", swahili: "Makadamia Mbichi", size: "250g", price: 420 },
+            { id: 5, category: "Nuts", name: "Macadamia (Roasted)", swahili: "Makadamia Kaanga", size: "250g", price: 500 },
+            { id: 6, category: "Nuts", name: "Almonds (Raw)", swahili: "Lozi Mbichi / Badamu", size: "250g", price: 500 },
+            { id: 7, category: "Nuts", name: "Almonds (Roasted)", swahili: "Lozi Kanga", size: "250g", price: 560 },
+            { id: 8, category: "Nuts", name: "Walnuts", swahili: "Jozi", size: "250g", price: 600 },
+            { id: 9, category: "Nuts", name: "Pistachios", swahili: "Pistashio", size: "250g", price: 950 },
+            { id: 10, category: "Nuts", name: "Hazelnuts", swahili: "Haseli / Njugu Mawe", size: "250g", price: 750 },
+            { id: 11, category: "Nuts", name: "Pecans", swahili: "Pekani", size: "250g", price: 950 },
+            { id: 12, category: "Nuts", name: "Brazil Nuts", swahili: "Njugu za Brazil", size: "250g", price: 1000 },
+            
+            // --- 2. SEEDS (Standard Pack: 250g) ---
+            { id: 13, category: "Seeds", name: "Sunflower Seeds", swahili: "Mbegu za Alizeti", size: "250g", price: 150 },
+            { id: 14, category: "Seeds", name: "Pumpkin Seeds", swahili: "Mbegu za Malenge", size: "250g", price: 400 },
+            { id: 15, category: "Seeds", name: "Chia Seeds", swahili: "Mbegu za Chia", size: "250g", price: 250 },
+            { id: 16, category: "Seeds", name: "Flax Seeds", swahili: "Mbegu za Kitani", size: "250g", price: 200 },
+            { id: 17, category: "Seeds", name: "Sesame Seeds", swahili: "Ufuta", size: "250g", price: 150 },
+            { id: 18, category: "Seeds", name: "Charoli Seeds", swahili: "Mbegu za Charoli", size: "250g", price: 700 },
+
+            // --- 3. DRIED FRUITS (Standard Pack: 250g) ---
+            { id: 19, category: "Dried Fruits", name: "Raisins", swahili: "Zabibu Kavu", size: "250g", price: 200 },
+            { id: 20, category: "Dried Fruits", name: "Dates (Common)", swahili: "Tende za Kawaida", size: "500g", price: 350 },
+            { id: 21, category: "Dried Fruits", name: "Dates (Ajwa/Special)", swahili: "Tende Maalum", size: "250g", price: 550 },
+            { id: 22, category: "Dried Fruits", name: "Prunes", swahili: "Sambarau Kavu", size: "250g", price: 450 },
+            { id: 23, category: "Dried Fruits", name: "Apricots", swahili: "Aprikoti", size: "250g", price: 620 },
+            { id: 24, category: "Dried Fruits", name: "Cranberries", swahili: "Kranberi", size: "250g", price: 500 },
+            { id: 25, category: "Dried Fruits", name: "Dried Mango", swahili: "Embe Kavu", size: "250g", price: 700 },
+            { id: 26, category: "Dried Fruits", name: "Dried Pineapple", swahili: "Nanasi Kavu", size: "250g", price: 650 },
+
+            // --- 4. SPICES & HERBS (Standard Pack: 50g - 100g) ---
+            { id: 27, category: "Spices & Herbs", name: "Jaggery", swahili: "Sukari Nguru", size: "500g", price: 150 },
+            { id: 28, category: "Spices & Herbs", name: "Coriander Powder", swahili: "Dhania", size: "100g", price: 60 },
+            { id: 29, category: "Spices & Herbs", name: "Turmeric Powder", swahili: "Manjano", size: "100g", price: 100 },
+            { id: 30, category: "Spices & Herbs", name: "Pilau Masala / Cumin", swahili: "Jira", size: "100g", price: 120 },
+            { id: 31, category: "Spices & Herbs", name: "Ginger Powder", swahili: "Tangawizi", size: "100g", price: 150 },
+            { id: 32, category: "Spices & Herbs", name: "Cinnamon Sticks", swahili: "Mdalasini", size: "100g", price: 250 },
+            { id: 33, category: "Spices & Herbs", name: "Cloves", swahili: "Karafuu", size: "50g", price: 150 },
+            { id: 34, category: "Spices & Herbs", name: "Cardamom", swahili: "Iliki", size: "50g", price: 350 },
+            { id: 35, category: "Spices & Herbs", name: "Nutmeg", swahili: "Kungumanga", size: "50g", price: 250 },
+            { id: 36, category: "Spices & Herbs", name: "Hibiscus", swahili: "Rosella", size: "100g", price: 120 },
+            { id: 37, category: "Spices & Herbs", name: "Lemongrass", swahili: "Mchaichai", size: "100g", price: 130 },
+            { id: 38, category: "Spices & Herbs", name: "Rosemary", swahili: "Rozimari", size: "100g", price: 180 },
+
+            // --- 5. GRAINS (Standard Pack: 500g) ---
+            { id: 39, category: "Grains", name: "Granola Mix", swahili: "Mche wa Granola", size: "500g", price: 700 },
+            { id: 40, category: "Grains", name: "Oats", swahili: "Shayiri", size: "500g", price: 250 },
+            { id: 41, category: "Grains", name: "Quinoa", swahili: "Kwinoa", size: "500g", price: 800 },
+            { id: 42, category: "Grains", name: "Green Peas (Dried)", swahili: "Njegere Kavu", size: "500g", price: 180 }
         ];
+
+        // Image helper function to prevent broken images
+        function getCategoryImage(category) {
+            // These are placeholder images for categories
+            if(category === 'Nuts') return 'https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?auto=format&fit=crop&w=300&q=80';
+            if(category === 'Seeds') return 'https://images.unsplash.com/photo-1518567784085-f37740cb1f88?auto=format&fit=crop&w=300&q=80';
+            if(category === 'Dried Fruits') return 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=300&q=80';
+            if(category === 'Grains') return 'https://images.unsplash.com/photo-1517093750519-7988a8ee33a9?auto=format&fit=crop&w=300&q=80';
+            return 'https://images.unsplash.com/photo-1596791168434-2e9f6f663456?auto=format&fit=crop&w=300&q=80'; // Spices
+        }
 
         let cart = [];
 
@@ -521,22 +550,36 @@
             const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
 
             filtered.forEach(product => {
+                const imgSrc = getCategoryImage(product.category);
+                
                 const card = `
                     <div class="product-card">
-                        <img src="${product.img}" alt="${product.name}" class="product-img">
+                        <img src="${imgSrc}" alt="${product.name}" class="product-img">
                         <div class="product-details">
-                            <h3 class="product-title">${product.name}</h3>
-                            <div class="product-price">KES ${product.price}</div>
-                            <button class="btn-cta" style="font-size: 0.9rem; padding: 8px 20px;" onclick="addToCart(${product.id})">Add to Cart</button>
+                            <div>
+                                <h3 class="product-title">${product.name}</h3>
+                                <span class="swahili-text">(${product.swahili})</span>
+                                <div class="product-meta">
+                                    <span class="size-badge">${product.size}</span>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="product-price">KES ${product.price}</div>
+                                <button class="btn-cta" style="font-size: 0.9rem; padding: 8px 20px; width:100%;" onclick="addToCart(${product.id})">Add to Cart</button>
+                            </div>
                         </div>
                     </div>
                 `;
                 grid.innerHTML += card;
             });
 
-            // Update active filter button
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            // Note: Simple active toggle logic, in real app assign IDs to buttons
+            // Update active filter button logic
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.innerText === filter || (filter === 'all' && btn.innerText === 'All')) {
+                    btn.classList.add('active');
+                }
+            });
         }
 
         // Add to Cart
@@ -566,7 +609,7 @@
                 total += item.price;
                 html += `
                     <div class="cart-item">
-                        <span>${item.name}</span>
+                        <span>${item.name} (${item.size})</span>
                         <span>KES ${item.price} <i class="fa-solid fa-trash" style="color:red; cursor:pointer; margin-left:10px;" onclick="removeFromCart(${index})"></i></span>
                     </div>
                 `;
