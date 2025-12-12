@@ -473,9 +473,9 @@
 
     <script>
         // --- DATA SOURCE ---
-        // Categories: Nuts, Seeds, Dried Fruits, Spices & Herbs, Grains
         const products = [
             // --- 1. NUTS (Standard Pack: 250g) ---
+            // Note: I've left your .jfif image here. Ensure the file is inside an "images" folder!
             { id: 1, category: "Nuts", name: "Peanuts (Roasted)", swahili: "Njugu Karanga", size: "500g", price: 250, img: "images/peanuts_roasted.jfif" },
             { id: 2, category: "Nuts", name: "Cashew Nuts (Raw)", swahili: "Korosho Mbichi", size: "250g", price: 300 },
             { id: 3, category: "Nuts", name: "Cashew Nuts (Roasted)", swahili: "Korosho Kananga", size: "250g", price: 400 },
@@ -528,9 +528,8 @@
             { id: 42, category: "Grains", name: "Green Peas (Dried)", swahili: "Njegere Kavu", size: "500g", price: 180 }
         ];
 
-        // Image helper function to prevent broken images
-        function getCategoryImage(category) {
-            // These are placeholder images for categories
+        // Helper: Get Default Image if none provided
+        function getCategoryDefault(category) {
             if(category === 'Nuts') return 'https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?auto=format&fit=crop&w=300&q=80';
             if(category === 'Seeds') return 'https://images.unsplash.com/photo-1518567784085-f37740cb1f88?auto=format&fit=crop&w=300&q=80';
             if(category === 'Dried Fruits') return 'https://images.unsplash.com/photo-1550583724-b2692b85b150?auto=format&fit=crop&w=300&q=80';
@@ -550,7 +549,8 @@
             const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
 
             filtered.forEach(product => {
-                const imgSrc = getCategoryImage(product.category);
+                // FIXED LOGIC: Use product.img if it exists; otherwise use category default
+                const imgSrc = product.img ? product.img : getCategoryDefault(product.category);
                 
                 const card = `
                     <div class="product-card">
@@ -573,7 +573,7 @@
                 grid.innerHTML += card;
             });
 
-            // Update active filter button logic
+            // Update active filter button
             document.querySelectorAll('.filter-btn').forEach(btn => {
                 btn.classList.remove('active');
                 if(btn.innerText === filter || (filter === 'all' && btn.innerText === 'All')) {
