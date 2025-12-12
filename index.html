@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Nibbles | Wholesome Farm Products</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --primary-red: #8B2E2E; /* Similar to Bob's Red Mill Red */
+            --earth-brown: #5D4037;
+            --wheat-cream: #F9F7F2;
+            --fresh-green: #4A7c59;
+            --text-dark: #333;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--wheat-cream);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Header & Nav */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .top-bar {
+            background-color: var(--primary-red);
+            color: white;
+            text-align: center;
+            padding: 5px;
+            font-size: 0.9rem;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px 20px;
+        }
+
+        .logo img {
+            height: 60px; /* Adjust based on your actual logo file */
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-red);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--earth-brown);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--primary-red);
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary-red);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -10px;
+            background-color: var(--fresh-green);
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 0.7rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1932&auto=format&fit=crop'); /* Placeholder Farm Image */
+            background-size: cover;
+            background-position: center;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+
+        .btn-cta {
+            background-color: var(--primary-red);
+            color: white;
+            padding: 12px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .btn-cta:hover {
+            background-color: #6b2323;
+        }
+
+        /* Sections General */
+        section {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-red);
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
+
+        /* Products Section */
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 2px solid var(--earth-brown);
+            color: var(--earth-brown);
+            padding: 8px 16px;
+            cursor: pointer;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background-color: var(--earth-brown);
+            color: white;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-img {
+            height: 200px;
+            background-color: #eee;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--earth-brown);
+        }
+
+        .product-price {
+            color: var(--fresh-green);
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        /* About & Contact */
+        .about-text, .contact-container {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-details {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            font-size: 1.1rem;
+        }
+
+        .social-links {
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            color: var(--primary-red);
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: transform 0.2s;
+        }
+
+        .social-links a:hover {
+            transform: scale(1.2);
+        }
+
+        /* Cart Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+        }
+
+        .cart-total {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+
+        .mpesa-btn {
+            background-color: #4CAF50; /* M-Pesa Green */
+            color: white;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--earth-brown);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        Free Shipping on Orders over KES 5,000!
+    </div>
+
+    <header>
+        <div class="nav-container">
+            <a href="#" class="logo-text">
+             <img src="nibbleslogo.jpeg" alt="Farm Nibbles Logo" style="height: 60px; border-radius: 50%;"> 
+              Farm Nibbles
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="#story">Our Story</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#recipes">Recipes</a></li>
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#contact">Contact Us</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon" onclick="openCart()">
+                <i class="fa-solid fa-basket-shopping"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div>
+            <h1>Straight from the Farm to Your Table</h1>
+            <p style="font-size: 1.2rem; margin-bottom: 20px;">Premium Nuts, Grains, and Spices.</p>
+            <a href="#products" class="btn-cta">Shop Now</a>
+        </div>
+    </section>
+
+    <section id="story">
+        <h2 class="section-title">Our Story</h2>
+        <div class="about-text">
+            <p>At Farm Nibbles, we believe in the simple power of nature. Founded with a passion for quality, we source the finest grains, crispest nuts, and most aromatic spices directly from local farmers.</p>
+            <br>
+            <p>Just like the traditional mills of old, we prioritize minimal processing to keep the nutrients intact. Whether you are baking a loaf of bread or looking for a healthy snack mix, Farm Nibbles brings you the authentic taste of the harvest.</p>
+        </div>
+    </section>
+
+    <section id="products">
+        <h2 class="section-title">Our Products</h2>
+        
+        <div class="category-filter">
+            <button class="filter-btn active" onclick="filterProducts('all')">All</button>
+            <button class="filter-btn" onclick="filterProducts('nuts')">Nuts</button>
+            <button class="filter-btn" onclick="filterProducts('dried-fruits')">Dried Fruits</button>
+            <button class="filter-btn" onclick="filterProducts('seeds')">Seeds</button>
+            <button class="filter-btn" onclick="filterProducts('grains')">Grains & Pulses</button>
+            <button class="filter-btn" onclick="filterProducts('spices')">Spices</button>
+            <button class="filter-btn" onclick="filterProducts('snacks')">Snack Mixes</button>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+            </div>
+    </section>
+
+    <section id="recipes" style="background-color: #fff;">
+        <h2 class="section-title">Farm Kitchen Recipes</h2>
+        <div style="text-align: center;">
+            <p>Coming soon! Delicious ways to use our oats, flours, and spices.</p>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-container">
+            <p>Have a question about our products or need consultation?</p>
+            
+            <div class="contact-details">
+                <div><i class="fa-solid fa-phone"></i> +254 707 935 253</div>
+                <div><i class="fa-solid fa-phone"></i> +254 927 600 000</div>
+                <div><i class="fa-solid fa-envelope"></i> <a href="mailto:consultmoses@gmail.com" style="color: var(--primary-red);">consultmoses@gmail.com</a></div>
+            </div>
+
+            <div class="social-links">
+                <h4>Follow Us</h4>
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a> <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="#"><i class="fa-brands fa-youtube"></i></a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Farm Nibbles. All Rights Reserved.</p>
+    </footer>
+
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeCart()">&times;</span>
+            <h2 style="color: var(--primary-red);">Your Basket</h2>
+            <div id="cartItems" style="margin-top: 20px; max-height: 300px; overflow-y: auto;">
+                <p>Your cart is empty.</p>
+            </div>
+            <div class="cart-total" id="cartTotal">
+                Total: KES 0
+            </div>
+            
+            <div style="margin-top: 20px; border-top: 1px solid #ccc; padding-top: 10px;">
+                <label for="phone" style="display:block; margin-bottom: 5px;">M-Pesa Phone Number:</label>
+                <input type="text" id="mpesaPhone" placeholder="07XX XXX XXX" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                <button class="mpesa-btn" onclick="processPayment()">Pay with M-Pesa</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        // Placeholder images used. Replace with actual product photos later.
+        const products = [
+            { id: 1, name: "Premium Cashew Nuts", category: "nuts", price: 650, img: "https://images.unsplash.com/photo-1536591375315-198946ca99af?auto=format&fit=crop&w=300&q=80" },
+            { id: 2, name: "Dried Mango Slices", category: "dried-fruits", price: 400, img: "https://images.unsplash.com/photo-1621447504864-d8686e12698c?auto=format&fit=crop&w=300&q=80" },
+            { id: 3, name: "Red Lentils (1kg)", category: "grains", price: 350, img: "https://images.unsplash.com/photo-1515543904379-3d757afe7264?auto=format&fit=crop&w=300&q=80" },
+            { id: 4, name: "Cumin Powder", category: "spices", price: 200, img: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=300&q=80" },
+            { id: 5, name: "Spicy Trail Mix", category: "snacks", price: 450, img: "https://images.unsplash.com/photo-1599599810769-bcde5a823097?auto=format&fit=crop&w=300&q=80" },
+            { id: 6, name: "Almonds", category: "nuts", price: 800, img: "https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?auto=format&fit=crop&w=300&q=80" },
+            { id: 7, name: "Turmeric Root", category: "spices", price: 150, img: "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&w=300&q=80" },
+            { id: 8, name: "Quinoa", category: "grains", price: 900, img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?auto=format&fit=crop&w=300&q=80" },
+            // New Nuts
+            { id: 9, name: "Macadamia Nuts", category: "nuts", price: 1200, img: "https://placehold.co/300x200?text=Macadamia" },
+            { id: 10, name: "Walnuts", category: "nuts", price: 850, img: "https://placehold.co/300x200?text=Walnuts" },
+            { id: 11, name: "Hazelnuts", category: "nuts", price: 900, img: "https://placehold.co/300x200?text=Hazelnuts" },
+            { id: 12, name: "Pistachios", category: "nuts", price: 1100, img: "https://placehold.co/300x200?text=Pistachios" },
+            { id: 13, name: "Pecans", category: "nuts", price: 1000, img: "https://placehold.co/300x200?text=Pecans" },
+            { id: 14, name: "Brazil Nuts", category: "nuts", price: 1050, img: "https://placehold.co/300x200?text=Brazil+Nuts" },
+            { id: 15, name: "Pine Nuts", category: "nuts", price: 2500, img: "https://placehold.co/300x200?text=Pine+Nuts" },
+            { id: 16, name: "Peanuts", category: "nuts", price: 300, img: "https://placehold.co/300x200?text=Peanuts" },
+            // New Dried Fruits
+            { id: 17, name: "Dried Cranberries", category: "dried-fruits", price: 500, img: "https://placehold.co/300x200?text=Cranberries" },
+            { id: 18, name: "Dried Apricots", category: "dried-fruits", price: 550, img: "https://placehold.co/300x200?text=Apricots" },
+            { id: 19, name: "Dried Figs", category: "dried-fruits", price: 600, img: "https://placehold.co/300x200?text=Figs" },
+            { id: 20, name: "Arabian Dates", category: "dried-fruits", price: 400, img: "https://placehold.co/300x200?text=Arabian+Dates" },
+            { id: 21, name: "Mabroom Dates", category: "dried-fruits", price: 800, img: "https://placehold.co/300x200?text=Mabroom+Dates" },
+            { id: 22, name: "Sagai Dates", category: "dried-fruits", price: 900, img: "https://placehold.co/300x200?text=Sagai+Dates" },
+            { id: 23, name: "Ajwa Dates", category: "dried-fruits", price: 1200, img: "https://placehold.co/300x200?text=Ajwa+Dates" },
+            { id: 24, name: "Ambara Dates", category: "dried-fruits", price: 1000, img: "https://placehold.co/300x200?text=Ambara+Dates" },
+            { id: 25, name: "Raisins", category: "dried-fruits", price: 250, img: "https://placehold.co/300x200?text=Raisins" },
+            { id: 26, name: "Prunes", category: "dried-fruits", price: 650, img: "https://placehold.co/300x200?text=Prunes" },
+            { id: 27, name: "Dried Coconut", category: "dried-fruits", price: 300, img: "https://placehold.co/300x200?text=Coconut" },
+            { id: 28, name: "Dried Pineapple", category: "dried-fruits", price: 450, img: "https://placehold.co/300x200?text=Pineapple" },
+            { id: 29, name: "Dried Kiwi", category: "dried-fruits", price: 500, img: "https://placehold.co/300x200?text=Kiwi" },
+            { id: 30, name: "Dried Apple Rings", category: "dried-fruits", price: 400, img: "https://placehold.co/300x200?text=Apples" },
+            // New Seeds
+            { id: 31, name: "Pumpkin Seeds", category: "seeds", price: 400, img: "https://placehold.co/300x200?text=Pumpkin+Seeds" },
+            { id: 32, name: "Sunflower Seeds", category: "seeds", price: 350, img: "https://placehold.co/300x200?text=Sunflower+Seeds" },
+            { id: 33, name: "Chia Seeds", category: "seeds", price: 600, img: "https://placehold.co/300x200?text=Chia+Seeds" },
+            { id: 34, name: "Flaxseeds", category: "seeds", price: 300, img: "https://placehold.co/300x200?text=Flaxseeds" },
+            { id: 35, name: "Sesame Seeds", category: "seeds", price: 350, img: "https://placehold.co/300x200?text=Sesame+Seeds" },
+            { id: 36, name: "Charoli Seeds", category: "seeds", price: 1500, img: "https://placehold.co/300x200?text=Charoli+Seeds" },
+            // New Grains & Pulses
+            { id: 37, name: "Green Peas", category: "grains", price: 200, img: "https://placehold.co/300x200?text=Green+Peas" },
+            { id: 38, name: "Oats", category: "grains", price: 250, img: "https://placehold.co/300x200?text=Oats" },
+            // New Spices
+            { id: 39, name: "Coriander Seeds", category: "spices", price: 150, img: "https://placehold.co/300x200?text=Coriander" },
+            { id: 40, name: "Dried Mint", category: "spices", price: 100, img: "https://placehold.co/300x200?text=Mint" },
+            { id: 41, name: "Cloves", category: "spices", price: 500, img: "https://placehold.co/300x200?text=Cloves" },
+            { id: 42, name: "Cinnamon Sticks", category: "spices", price: 350, img: "https://placehold.co/300x200?text=Cinnamon" },
+            { id: 43, name: "Cardamom", category: "spices", price: 800, img: "https://placehold.co/300x200?text=Cardamom" },
+            { id: 44, name: "Rosemary", category: "spices", price: 200, img: "https://placehold.co/300x200?text=Rosemary" },
+            { id: 45, name: "Lemongrass", category: "spices", price: 150, img: "https://placehold.co/300x200?text=Lemongrass" },
+            { id: 46, name: "Dried Ginger", category: "spices", price: 250, img: "https://placehold.co/300x200?text=Ginger" },
+            { id: 47, name: "Paprika", category: "spices", price: 300, img: "https://placehold.co/300x200?text=Paprika" },
+            { id: 48, name: "Star Anise", category: "spices", price: 400, img: "https://placehold.co/300x200?text=Anise" },
+            { id: 49, name: "Fennel Seeds", category: "spices", price: 200, img: "https://placehold.co/300x200?text=Fennel" },
+            { id: 50, name: "Nutmeg", category: "spices", price: 600, img: "https://placehold.co/300x200?text=Nutmeg" },
+        ];
+
+        let cart = [];
+
+        // --- FUNCTIONS ---
+
+        // Render Products
+        function renderProducts(filter) {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = ''; // Clear existing
+
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+            filtered.forEach(product => {
+                const card = `
+                    <div class="product-card">
+                        <img src="${product.img}" alt="${product.name}" class="product-img">
+                        <div class="product-details">
+                            <h3 class="product-title">${product.name}</h3>
+                            <div class="product-price">KES ${product.price}</div>
+                            <button class="btn-cta" style="font-size: 0.9rem; padding: 8px 20px;" onclick="addToCart(${product.id})">Add to Cart</button>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            // Note: Simple active toggle logic, in real app assign IDs to buttons
+        }
+
+        // Add to Cart
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateCartUI();
+            alert(`${product.name} added to cart!`);
+        }
+
+        // Update Cart UI
+        function updateCartUI() {
+            document.getElementById('cartCount').innerText = cart.length;
+            
+            const cartItemsContainer = document.getElementById('cartItems');
+            const totalContainer = document.getElementById('cartTotal');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                totalContainer.innerText = 'Total: KES 0';
+                return;
+            }
+
+            let total = 0;
+            let html = '';
+            cart.forEach((item, index) => {
+                total += item.price;
+                html += `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <span>KES ${item.price} <i class="fa-solid fa-trash" style="color:red; cursor:pointer; margin-left:10px;" onclick="removeFromCart(${index})"></i></span>
+                    </div>
+                `;
+            });
+
+            cartItemsContainer.innerHTML = html;
+            totalContainer.innerText = `Total: KES ${total}`;
+        }
+
+        // Remove from Cart
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        // Filter Function
+        function filterProducts(category) {
+            renderProducts(category);
+        }
+
+        // Modal Logic
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        // Close modal if clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('cartModal')) {
+                closeCart();
+            }
+        }
+
+        // M-Pesa Simulation Logic
+        function processPayment() {
+            const phone = document.getElementById('mpesaPhone').value;
+            const totalText = document.getElementById('cartTotal').innerText;
+            const amount = totalText.replace('Total: KES ', '');
+
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+
+            if (!phone) {
+                alert("Please enter a valid M-Pesa phone number.");
+                return;
+            }
+
+            // Simulate API Call
+            const btn = document.querySelector('.mpesa-btn');
+            const originalText = btn.innerText;
+            btn.innerText = "Processing...";
+            btn.disabled = true;
+
+            setTimeout(() => {
+                alert(`STK Push sent to ${phone} for KES ${amount}. Please enter your PIN on your phone to complete the transaction.`);
+                btn.innerText = originalText;
+                btn.disabled = false;
+                
+                // Simulate success
+                cart = [];
+                updateCartUI();
+                closeCart();
+                alert("Payment Successful! Thank you for shopping with Farm Nibbles.");
+            }, 2000);
+        }
+
+        // Initialize
+        renderProducts('all');
+    </script>
+</body>
+</html>
